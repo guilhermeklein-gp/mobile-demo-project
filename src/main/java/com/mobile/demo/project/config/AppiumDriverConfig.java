@@ -1,6 +1,5 @@
 package com.mobile.demo.project.config;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,24 +32,23 @@ public class AppiumDriverConfig {
     @Bean(destroyMethod = "quit")
     public AndroidDriver androidDriver() throws MalformedURLException {
         UiAutomator2Options options = new UiAutomator2Options();
+
         options.setDeviceName(deviceName);
         options.setPlatformName("Android");
         options.setPlatformVersion(platformVersion);
-
-        File appFile = new File(appPath);
-        if (!appFile.exists()) {
-            URL resource = getClass().getClassLoader().getResource(appPath);
-            if (resource != null) {
-                appFile = new File(resource.getFile());
-            } else {
-                throw new IllegalStateException("APK not found: " + appPath);
-            }
-        }
-        options.setApp(appFile.getAbsolutePath());
+        options.setAutomationName("UiAutomator2");
         options.setAutoGrantPermissions(true);
         options.setNoReset(false);
 
-        URL serverUrl = URI.create(appiumServerUrl + "/wd/hub").toURL();
+        File appFile = new File("src/main/resources/" + appPath);
+        if (!appFile.exists()) {
+            throw new IllegalStateException("APK not found at: " + appFile.getAbsolutePath());
+        }
+
+        options.setApp(appFile.getAbsolutePath());
+
+        URL serverUrl = URI.create(appiumServerUrl).toURL();
+
         return new AndroidDriver(serverUrl, options);
     }
 }

@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = {"src/test/java/com/mobile/demo/project/cucumber/features"},
-        glue = {"com.mobile.demo.project.cucumber", "com.mobile.demo.project.cucumber.config"},
+        glue = {"com.mobile.demo.project.cucumber"},
         tags = ("")
 )
-public class MainRunner {
+public class MainRunnerTest {
 }
